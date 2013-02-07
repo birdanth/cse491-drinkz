@@ -44,6 +44,10 @@ def check_inventory(mfg, liquor):
         
     return False
 
+
+#To fix this and make it sum in both OZ and ML, but report in ML, amount could be 
+#specified as a tuple of value and units, but it would only return the amount, after
+#converting if need be, in ML.
 def get_liquor_amount(mfg, liquor):
     "Retrieve the total amount of any given liquor currently in inventory."
     amounts = []
