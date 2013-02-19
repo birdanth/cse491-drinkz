@@ -22,25 +22,17 @@ def load_bottle_types(fp):
 
     Returns number of bottle types loaded
     """
-    try:
-        reader = csv.reader(fp)
+    reader = parse_csv(fp)
 
-        x = []
-        n = 0
-        for line in reader:
-	    if not line[n].strip():
-	        continue
+    x = []
+    n = 0
+    for line in reader:
+        print "line is:", (line,)
+        (mfg, name, typ) = line
+        n += 1
+        db.add_bottle_type(mfg, name, typ)
 
-            if line[0].startswith('#'):
-               continue
-        
-            (mfg, name, typ) = line
-            n += 1
-            db.add_bottle_type(mfg, name, typ)
-
-        return n
-    except RuntimeError:
-	print "There is a problem"
+    return n
 
 
 def load_inventory(fp):
@@ -56,38 +48,26 @@ def load_inventory(fp):
     Note that a LiquorMissing exception is raised if bottle_types_db does
     not contain the manufacturer and liquor name already.
     """
-    try:
-        reader = data_reader(fp)
+    reader = parse_csv(fp)
 
-        x = []
-        n = 0
-        for (mfg, name, amount) in reader:
-            n += 1
-            db.add_to_inventory(mfg, name, amount)
+    x = []
+    n = 0
+    for (mfg, name, amount) in reader:
+        n += 1
+        db.add_to_inventory(mfg, name, amount)
 
-        return n
-    except RuntimeError:
-	print "There is a problem"
+    return n
     
      
 
-def data_reader(fp):
+def parse_csv(fp):
 
     reader = csv.reader(fp)
-    x = []
-    n = 0
-    j = 0
 
     for line in reader:
-        if not line[0].startswith('#'):
-            x.append(line)
+        if not line or not line[0].strip() or line[0].startswith('#'):
+            continue
 
-        elif line[n].split():
-            x.append(line)
+        yield line
+     
 
-        n += 1
-
-    # trying to get this part to work (didn't start project until 9pm)
-    while j < len(x):
-        yield x[j]
-        j += 1

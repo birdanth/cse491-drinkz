@@ -85,16 +85,22 @@ def test_bulk_load_bottle_types_1():
     assert n == 1, n
 #################################################################
 
-def test_bulk_load_bottle_types_whitespace():
+
+def test_bulk_load_inventory_2():
     db._reset_db()
 
-    data = "Johnnie Walker,Black Label,blended scotch              " 
-    fp = StringIO(data)                 
-    n = load_bulk_data.load_bottle_types(fp)
+    db.add_bottle_type('Johnnie Walker', 'Black Label', 'blended scotch')
+    db.add_bottle_type('a','b','xxx')
 
-    assert db._check_bottle_type_exists('Johnnie Walker', 'Black Label')
+    data = "Johnnie Walker,Black Label,1000 ml\n  \na,b,c"
+    fp = StringIO(data)                 # make this look like a file handle
+    n = load_bulk_data.load_inventory(fp)
 
-def test_bulk_load_bottle_types_commented():
+    assert db.check_inventory('Johnnie Walker', 'Black Label')
+    assert n == 2, n
+
+
+def test_bulk_load_bottle_types_3():
     db._reset_db()
 
     data = "Johnnie Walker,Black Label,blended scotch #blah blah blah"
@@ -102,7 +108,7 @@ def test_bulk_load_bottle_types_commented():
     n = load_bulk_data.load_bottle_types(fp)
 
     assert db._check_bottle_type_exists('Johnnie Walker', 'Black Label')
- 
+    assert n == 1, n
 
 ##################################################################
 def test_script_load_bottle_types_1():
