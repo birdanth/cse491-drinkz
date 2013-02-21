@@ -4,10 +4,10 @@ Database functionality for drinkz information.
 
 # private singleton variables at module level
 
-#implement bottle_types as a set
 _bottle_types_db = set([])  
-#implement inventory as a dict of ( (mfg,liquor) : amount )
 _inventory_db = {}
+_recipes_db = {}
+
 
 def _reset_db():
     "A method only to be used during testing -- toss the existing db info."
@@ -43,11 +43,8 @@ def add_to_inventory(mfg, liquor, amount):
     # Basically, when adding more of a type of liquor to the inventory
     # it keeps track of the total in ml automatically
     for k,v in _inventory_db.items():
-	print "key[0]: " , k[0]
-	print "key[1]: " , k[1]
 	if k[0] == mfg and k[1] == liquor: 
 	    currentValue =  v
-	    print "just checking my current value: " , currentValue
 
             total = 0.0
 	    currentDigit,ml = currentValue.split()
@@ -62,11 +59,12 @@ def add_to_inventory(mfg, liquor, amount):
                 total += num
             elif units == 'oz':
                 total += 29.5735 * num
+	    elif units == 'gallons' or units == 'gallon' or units == 'gall':
+		total += 3785.41 * num
             else:
                 print "unknown unit type, not added to total"
 
 	    newValue =  str(total) + ' ml'
-	    print "this is the new value: " , newValue
             _inventory_db[(mfg, liquor)] = newValue
 	    repeatFlag = True
 
@@ -88,7 +86,6 @@ def get_liquor_amount(mfg, liquor):
     "Retrieve the total amount of any given liquor currently in inventory."
     amounts = []
     for k,v in _inventory_db.items():
-	print "this is inventory: ", k,v
         if k[0] == mfg and k[1] == liquor:
             amounts.append(v)
 
@@ -104,12 +101,28 @@ def get_liquor_amount(mfg, liquor):
 	    total += num
 	elif units == 'oz':
 	    total += 29.5735 * num
+        elif units == 'gallons' or units == 'gallon' or units == 'gall':
+            total += 3785.41 * num
 	else:
 	    raise Exception("unknown unit %s" % units)
 
-    return "%s ml" % (total,)
+    return  total
 
 def get_liquor_inventory():
     "Retrieve all liquor types in inventory, in tuple form: (mfg, liquor)."
     for key in _inventory_db:
         yield key
+
+def add_recipe(r):
+    # still need to check if a duplicate s added.
+    _recipes_db[r.name] = r.ing
+
+def get_recipe(name):
+    for k,v in _recipes_db.items():
+	if k == name:
+	    return k,v
+
+def get_all_recipes():
+    for k,v in _recipes_db.items():
+	print "RECIPES:   " , (k,v)
+	yield (k,v)
