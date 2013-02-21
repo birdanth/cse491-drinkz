@@ -3,14 +3,17 @@ Database functionality for drinkz information.
 """
 
 # private singleton variables at module level
-_bottle_types_db = []
-_inventory_db = []
+
+#implement bottle_types as a set
+_bottle_types_db = set([])  
+#implement inventory as a dict of ( (mfg,liquor) : amount )
+_inventory_db = {}
 
 def _reset_db():
     "A method only to be used during testing -- toss the existing db info."
     global _bottle_types_db, _inventory_db
-    _bottle_types_db = []
-    _inventory_db = []
+    _bottle_types_db = set([])
+    _inventory_db = {}
 
 # exceptions in Python inherit from Exception and generally don't need to
 # override any methods.
@@ -19,7 +22,7 @@ class LiquorMissing(Exception):
 
 def add_bottle_type(mfg, liquor, typ):
     "Add the given bottle type into the drinkz database."
-    _bottle_types_db.append((mfg, liquor, typ))
+    _bottle_types_db.add((mfg, liquor, typ))
 
 def _check_bottle_type_exists(mfg, liquor):
     for (m, l, _) in _bottle_types_db:
@@ -34,12 +37,45 @@ def add_to_inventory(mfg, liquor, amount):
         err = "Missing liquor: manufacturer '%s', name '%s'" % (mfg, liquor)
         raise LiquorMissing(err)
 
-    # just add it to the inventory database as a tuple, for now.
-    _inventory_db.append((mfg, liquor, amount))
+    repeatFlag = False
+    # if the bottle type already exists add the amounts together and associate
+    # the sum to the same key (stored in ml)
+    # Basically, when adding more of a type of liquor to the inventory
+    # it keeps track of the total in ml automatically
+    for k,v in _inventory_db.items():
+	print "key[0]: " , k[0]
+	print "key[1]: " , k[1]
+	if k[0] == mfg and k[1] == liquor: 
+	    currentValue =  v
+	    print "just checking my current value: " , currentValue
+
+            total = 0.0
+	    currentDigit,ml = currentValue.split()
+	    currentDigit = float(currentDigit)
+	    total += currentDigit
+
+            num, units = amount.split()
+            num = float(num)
+            units = units.lower()
+
+            if units == 'ml':
+                total += num
+            elif units == 'oz':
+                total += 29.5735 * num
+            else:
+                print "unknown unit type, not added to total"
+
+	    newValue =  str(total) + ' ml'
+	    print "this is the new value: " , newValue
+            _inventory_db[(mfg, liquor)] = newValue
+	    repeatFlag = True
+
+    if not repeatFlag:
+        _inventory_db[(mfg, liquor)] = amount
 
 def check_inventory(mfg, liquor):
-    for (m, l, _) in _inventory_db:
-        if mfg == m and liquor == l:
+    for key  in _inventory_db:
+        if key[0] == mfg and key[1] == liquor:
             return True
         
     return False
@@ -51,12 +87,14 @@ def check_inventory(mfg, liquor):
 def get_liquor_amount(mfg, liquor):
     "Retrieve the total amount of any given liquor currently in inventory."
     amounts = []
-    for (m, l, amount) in _inventory_db:
-        if mfg == m and liquor == l:
-            amounts.append(amount)
+    for k,v in _inventory_db.items():
+	print "this is inventory: ", k,v
+        if k[0] == mfg and k[1] == liquor:
+            amounts.append(v)
 
     total = 0.0
     for amount in amounts:
+	#print "this is the amount: " , amount
 	# amount is going ot be in format "number unit"
 	num, units = amount.split()
 	num = float(num)
@@ -73,5 +111,5 @@ def get_liquor_amount(mfg, liquor):
 
 def get_liquor_inventory():
     "Retrieve all liquor types in inventory, in tuple form: (mfg, liquor)."
-    for (m, l, _) in _inventory_db:
-        yield m, l
+    for key in _inventory_db:
+        yield key
