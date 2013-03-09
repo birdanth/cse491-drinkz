@@ -47,6 +47,7 @@ def add_to_inventory(mfg, liquor, amount):
 	if k[0] == mfg and k[1] == liquor: 
 	    currentValue =  v
 
+	#this needs to change
             total = 0.0
 	    currentDigit,ml = currentValue.split()
 	    currentDigit = float(currentDigit)
