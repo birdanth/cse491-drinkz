@@ -5,7 +5,8 @@ class Recipe:
     	
     def __init__(self,name,ing):
 	self.name = name
-        self.ing = ing 
+        self.ing = ing
+	#self.recipe = (name,[ing]) 
 
     def __len__(self):
         return len(self.__recipes)

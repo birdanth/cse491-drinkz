@@ -14,6 +14,7 @@ def _reset_db():
     global _bottle_types_db, _inventory_db
     _bottle_types_db = set([])
     _inventory_db = {}
+    _recipes_db = {}
 
 # exceptions in Python inherit from Exception and generally don't need to
 # override any methods.
@@ -115,7 +116,7 @@ def get_liquor_inventory():
 
 def add_recipe(r):
     # still need to check if a duplicate s added.
-    _recipes_db[r.name] = r.ing
+    _recipes_db[r.name] = r
 
 def get_recipe(name):
     for k,v in _recipes_db.items():
@@ -125,4 +126,5 @@ def get_recipe(name):
 def get_all_recipes():
     for k,v in _recipes_db.items():
 	print "RECIPES:   " , (k,v)
-	yield (k,v)
+	yield v
+	#return _recipes_db.values()
