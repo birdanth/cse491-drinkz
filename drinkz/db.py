@@ -72,6 +72,25 @@ def add_to_inventory(mfg, liquor, amount):
     if not repeatFlag:
         _inventory_db[(mfg, liquor)] = amount
 
+
+def convert_to_ml(amount):
+    num, units = amount.split()
+    num = float(num)
+    units = units.lower()
+    
+    if units == 'ml':
+        pass
+    elif units == 'liters' || 'liter':
+	num = 1000.0 * num
+    elif units == 'oz':
+        num = 29.5735 * num
+    elif units == 'gallons' or units == 'gallon' or units == 'gall':
+        num = 3785.41 * num
+    else:
+        print "unknown unit type, not added to total"
+ 
+    return num
+
 def check_inventory(mfg, liquor):
     for key  in _inventory_db:
         if key[0] == mfg and key[1] == liquor:
@@ -128,3 +147,13 @@ def get_all_recipes():
 	print "RECIPES:   " , (k,v)
 	yield v
 	#return _recipes_db.values()
+
+def check_inventory_for_type(generic_type):
+    mathching_ml = []
+    for (m,l,t) in _bottle_types_db:
+	if t == generic_type:
+	    amount = _inventory_db.get((m,l),0.0)
+	    matching_ml.append((m,l,amount))
+
+    return matching_ml
+
