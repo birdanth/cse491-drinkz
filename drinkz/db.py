@@ -144,10 +144,7 @@ def get_recipe(name):
 	    return k,v
 
 def get_all_recipes():
-    for k,v in _recipes_db.items():
-	print "RECIPES:   " , (k,v)
-	yield v
-	#return _recipes_db.values()
+    return _recipes_db.values()
 
 def check_inventory_for_type(generic_type):
     mathching_ml = []
