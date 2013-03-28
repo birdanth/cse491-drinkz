@@ -47,26 +47,31 @@ class SimpleApp(object):
           
     def index(self, environ, start_response):
         data = make_html.index()
+        
         start_response('200 OK', list(html_headers))
         return [data]
 
     def liquor_types(self, environ, start_response):
         data = make_html.liquor_types()
+        
         start_response('200 OK', list(html_headers))
         return [data]
            
     def recipes(self, environ, start_response):
         data = make_html.recipes()
+        
         start_response('200 OK', list(html_headers))
         return [data]
     
     def inventory(self, environ, start_response):
         data = make_html.inventory()
+        
         start_response('200 OK', list(html_headers))
         return [data]
     
     def conversion(self, environ, start_response):
         data = make_html.conversion_form()
+        
         start_response('200 OK', list(html_headers))
         return [data]
     
@@ -118,10 +123,8 @@ class SimpleApp(object):
         formdata = environ['QUERY_STRING']
         results = urlparse.parse_qs(formdata)
 
-        amount = results['inputValue'][0]
-        
+        amount = results['inputValue'][0]   
         content_type = 'text/html'
-
         data = "Amount Entered: %s | Amount in MilliLeters(ML): %s |  <a href='./'>HOME </a>" % (amount, db.convert_to_ml(amount))
 
         start_response('200 OK', list(html_headers))
