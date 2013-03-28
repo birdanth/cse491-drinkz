@@ -1,10 +1,17 @@
 #! /usr/bin/env python
+
+
 from wsgiref.simple_server import make_server
 import urlparse
 import simplejson
+import make_html
+import db
 
 dispatch = {
     '/' : 'index',
+    '/recipes.html' : 'recipes',
+    '/inventory.html' : 'inventory',
+    '/liquor_types.html' : 'liquor_types',
     '/content' : 'somefile',
     '/error' : 'error',
     '/helmet' : 'helmet',
@@ -14,6 +21,8 @@ dispatch = {
 }
 
 html_headers = [('Content-type', 'text/html')]
+css_headers = [('Content-type', 'text/css')]
+js_headers = [('Content-type', 'text/javascript')]
 
 class SimpleApp(object):
     def __call__(self, environ, start_response):
@@ -30,21 +39,44 @@ class SimpleApp(object):
             start_response("404 Not Found", html_headers)
             return ["No path %s found" % path]
 
+        # Populate a sample database
+
         return fn(environ, start_response)
-            
+          
     def index(self, environ, start_response):
-        data = """\
-Visit:
-<a href='content'>a file</a>,
-<a href='error'>an error</a>,
-<a href='helmet'>an image</a>,
-<a href='somethingelse'>something else</a>, or
-<a href='form'>a form...</a>
-<p>
-<img src='/helmet'>
-"""
+        data = make_html.index()
         start_response('200 OK', list(html_headers))
         return [data]
+    
+    def recipes(self, environ, start_response):
+        data = make_html.recipes()
+                
+                
+
+        start_response('200 OK', list(html_headers))
+        return [data]
+    
+    def inventory(self, environ, start_response):
+        data = """\
+
+                Inventory
+
+                """
+
+        start_response('200 OK', list(html_headers))
+        return [data]
+    
+    def liquor_types(self, environ, start_response):
+        data = """\
+
+                Liquor Types
+
+                """
+
+        start_response('200 OK', list(html_headers))
+        return [data]
+        
+
         
     def somefile(self, environ, start_response):
         content_type = 'text/html'
@@ -126,6 +158,9 @@ Visit:
         response = { 'result' : result, 'error' : None, 'id' : 1 }
         response = simplejson.dumps(response)
         return str(response)
+
+    def convert_unit(amount):
+        unitconversion.convert_to_ml(amount)
 
     def rpc_hello(self):
         return 'world!'
