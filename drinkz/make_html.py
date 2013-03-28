@@ -50,11 +50,25 @@ def index():
                 <a href='recipes.html'>Recipes</a>
                 <p>
                 <a href='inventory.html'>Inventory</a>
+                <p>
+                <a href='conversion.html'>Convert to ML </a>
                 """
 ###
+def liquor_types():
+    html = """<title>Liquor Types</title> <ul>"""
+    for m, l, g in db._bottle_types_db:
+        html += '<li>%s' % m
+        html += ' - %s' % l
+        html += ' - %s</li>' % g
+    html += """</ul>"""
+    html += "<a href='index.html'> HOME </a>"
+    return html
+
+###
+
 
 def recipes():
-    html = """ Current Recipes \n <ul>"""
+    html = """ <title>Current Recipes</title> <ul> """
     for r in db.get_all_recipes():
             html += '<li>%s<ul>' % r.name
             for name, amount in r.ingredients:
@@ -62,24 +76,33 @@ def recipes():
                 html+= ' - %s'% amount
             html+= '</ul>'
     html += """</ul>"""
+    html += "<a href='index.html'> HOME </a>"
     return html
 
     
-###
 
 
 ###
 
-fp = open('html/liquor_types.html', 'w')
-print >>fp, '<ul>'
-for m, l, g in db._bottle_types_db:
-    print >>fp, '<li>', m, '--', l, '--', g
-print >>fp, '</ul>'
+def inventory():
+    html = """ <title>Inventory</title> <ul>"""
+    for m, l in db.get_liquor_inventory():
+        amount = db.get_liquor_amount(m, l)
+        html += '<li>%s' % m
+        html += ' - %s' % l
+        html += ' - %s</li>' % amount
+    html += """</ul>"""
+    html += "<a href='index.html'> HOME </a>"
+    return html
+
+###
+
+def conversion_form():
+    return """ <title>Unit Converter</title> \
+            <form action='converter_recv'>
+            Amount? <input type='text' name='inputValue' size'20'>
+            <input type='submit'>
+            </form>
+            """
 
 
-fp = open('html/liquor_inventory.html', 'w')
-print >>fp, '<ul>'
-for m, l in db.get_liquor_inventory():
-    amount = db.get_liquor_amount(m, l)
-    print >>fp, '<li>', m, '--', l, '--', amount
-print >>fp, '</ul>'
