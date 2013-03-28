@@ -67,6 +67,9 @@ def recipes():
     
 ###
 
+
+###
+
 fp = open('html/liquor_types.html', 'w')
 print >>fp, '<ul>'
 for m, l, g in db._bottle_types_db:
