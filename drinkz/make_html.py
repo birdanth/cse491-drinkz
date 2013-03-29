@@ -48,18 +48,41 @@ except:
 ###
 
 def index():
-    return  """             
-                <a href='liquor_types.html'>Liquor types</a>
-                <p>
-                <a href='recipes.html'>Recipes</a>
-                <p>
-                <a href='inventory.html'>Inventory</a>
-                <p>
-                <a href='conversion.html'>Convert to ML </a>
-                """
+    return  """
+            <html style="background-color:gray" >
+                <head style="font-family:verdana;">
+                    <title>Index</title>
+                    <style type ="text/css"> h1{color:red;text-align:center;} </style>
+                    <script type="text/javascript">
+                        function alert()
+                        {
+                            alert("Testing Alert System");
+                        }
+                    </script>
+                </head>
+                <body style="text-align:left" >
+                    <h1>cse491-drinkz </h1>
+                    <p style="text-align:center">
+                    <input type="button" onclick="alert()" value="Alert System"  />
+                    </p>
+                    <a href='liquor_types.html'>Liquor types</a>
+                    <p>
+                    <a href='recipes.html'>Recipes</a>
+                    <p>
+                    <a href='inventory.html'>Inventory</a>
+                    <p>
+                    <a href='conversion.html'>Convert to ML </a>
+                </body>
+            </html>
+            """
 ###
 def liquor_types():
-    html = """<title>Liquor Types</title> <ul>"""
+    html = """<title>Liquor Types</title>
+                  <h1 style="color:red" >Liquor Types </h1> 
+
+
+              <ul>
+           """
     for m, l, g in db._bottle_types_db:
         html += '<li>%s' % m
         html += ' - %s' % l
@@ -72,7 +95,12 @@ def liquor_types():
 
 
 def recipes():
-    html = """ <title>Current Recipes</title> <ul> """
+    html = """<title>Recipes</title>
+                  <h1 style="color:red" >Recipes </h1> 
+
+
+              <ul>
+           """
     for r in db.get_all_recipes():
             html += '<li>%s<ul>' % r.name
             for name, amount in r.ingredients:
@@ -89,7 +117,12 @@ def recipes():
 ###
 
 def inventory():
-    html = """ <title>Inventory</title> <ul>"""
+    html = """<title>Inventory</title>
+                  <h1 style="color:red" >Inventory </h1> 
+
+
+              <ul>
+           """
     for m, l in db.get_liquor_inventory():
         amount = db.get_liquor_amount(m, l)
         html += '<li>%s' % m
@@ -102,11 +135,12 @@ def inventory():
 ###
 
 def conversion_form():
-    return """ <title>Unit Converter</title> \
-            <form action='converter_recv'>
-            Amount? <input type='text' name='inputValue' size'20'>
-            <input type='submit'>
-            </form>
+    return """ <title>Unit Converter</title>
+                <h1 style="color:red" >Unit Converter</h1>
+                    <form action='converter_recv'>
+                        Amount? <input type='text' name='inputValue' size'20'>
+                        <input type='submit'>
+                    </form>
             """
 
 
