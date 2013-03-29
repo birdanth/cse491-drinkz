@@ -129,6 +129,15 @@ class SimpleApp(object):
 
         start_response('200 OK', list(html_headers))
         return [data]
+    
+    def rpc_convert_units_to_ml(self, amount):
+        return unitconversion.convert_to_ml(amount)
+
+    def rpc_get_recipe_names(self):
+        return list(db.get_all_recipes())
+
+    def rpc_get_liquor_inventory(self):
+        return list(db.get_liquor_inventory())
 
 
     def dispatch_rpc(self, environ, start_response):
