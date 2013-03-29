@@ -1,19 +1,32 @@
+
 #! /usr/bin/env python
+
+
 from wsgiref.simple_server import make_server
 import urlparse
 import simplejson
+import make_html
+import db
 
 dispatch = {
     '/' : 'index',
+    '/index.html' : 'index',
+    '/recipes.html' : 'recipes',
+    '/inventory.html' : 'inventory',
+    '/liquor_types.html' : 'liquor_types',
+    '/conversion.html' : 'conversion',
     '/content' : 'somefile',
     '/error' : 'error',
     '/helmet' : 'helmet',
     '/form' : 'form',
     '/recv' : 'recv',
+    '/converter_recv' : 'converter_recv',
     '/rpc'  : 'dispatch_rpc'
 }
 
 html_headers = [('Content-type', 'text/html')]
+css_headers = [('Content-type', 'text/css')]
+js_headers = [('Content-type', 'text/javascript')]
 
 class SimpleApp(object):
     def __call__(self, environ, start_response):
@@ -31,20 +44,38 @@ class SimpleApp(object):
             return ["No path %s found" % path]
 
         return fn(environ, start_response)
-            
+          
     def index(self, environ, start_response):
-        data = """\
-Visit:
-<a href='content'>a file</a>,
-<a href='error'>an error</a>,
-<a href='helmet'>an image</a>,
-<a href='somethingelse'>something else</a>, or
-<a href='form'>a form...</a>
-<p>
-<img src='/helmet'>
-"""
+        data = make_html.index()
+        
         start_response('200 OK', list(html_headers))
         return [data]
+
+    def liquor_types(self, environ, start_response):
+        data = make_html.liquor_types()
+        
+        start_response('200 OK', list(html_headers))
+        return [data]
+           
+    def recipes(self, environ, start_response):
+        data = make_html.recipes()
+        
+        start_response('200 OK', list(html_headers))
+        return [data]
+    
+    def inventory(self, environ, start_response):
+        data = make_html.inventory()
+        
+        start_response('200 OK', list(html_headers))
+        return [data]
+    
+    def conversion(self, environ, start_response):
+        data = make_html.conversion_form()
+        
+        start_response('200 OK', list(html_headers))
+        return [data]
+    
+
         
     def somefile(self, environ, start_response):
         content_type = 'text/html'
@@ -86,6 +117,19 @@ Visit:
 
         start_response('200 OK', list(html_headers))
         return [data]
+
+    
+    def converter_recv(self, environ, start_response):
+        formdata = environ['QUERY_STRING']
+        results = urlparse.parse_qs(formdata)
+
+        amount = results['inputValue'][0]   
+        content_type = 'text/html'
+        data = "Amount Entered: %s | Amount in MilliLeters(ML): %s |  <a href='./'>HOME </a>" % (amount, db.convert_to_ml(amount))
+
+        start_response('200 OK', list(html_headers))
+        return [data]
+
 
     def dispatch_rpc(self, environ, start_response):
         # POST requests deliver input data via a file-like handle,
@@ -133,14 +177,7 @@ Visit:
     def rpc_add(self, a, b):
         return int(a) + int(b)
     
-def form():
-    return """
-<form action='recv'>
-Your first name? <input type='text' name='firstname' size'20'>
-Your last name? <input type='text' name='lastname' size='20'>
-<input type='submit'>
-</form>
-"""
+
 
 if __name__ == '__main__':
     import random, socket
