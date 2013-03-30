@@ -74,8 +74,6 @@ class SimpleApp(object):
         
         start_response('200 OK', list(html_headers))
         return [data]
-    
-
         
     def somefile(self, environ, start_response):
         content_type = 'text/html'
@@ -137,7 +135,7 @@ class SimpleApp(object):
         return list(db.get_all_recipes())
 
     def rpc_get_liquor_inventory(self):
-        return list(db.get_liquor_inventory())
+        return list(make_html.db.get_liquor_inventory())
 
 
     def dispatch_rpc(self, environ, start_response):

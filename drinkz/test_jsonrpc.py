@@ -35,19 +35,27 @@ def test_convert_units_to_ml():
     status, headers, result = jsonrpc('convert_units_to_ml', ['1 oz'])
 
     assert status == '200 OK'
+    assert result['error'] == None
+    
     assert result['result'] == 29.5735, result['result']
-
 
 
 def test_get_recipe_names():
     status, headers, result = jsonrpc('get_recipe_names', [])
 
     assert status == '200 OK'
+    assert result['error'] == None
+
+    print headers
+
     assert 'scotch on the rocks' in result['result'], result['result']
 
 def test_get_liquor_inventory():
     status, headers, result = jsonrpc('get_liquor_inventory', [])
 
     assert status == '200 OK'
-    assert 'Gray Goose' in result['result'], result['result']
-
+    assert result['error'] == None
+    
+    print result['result']
+    assert ['Johnnie Walker','Black Label'] in result['result'], result['result']
+    assert ['WRONG','Black Label'] in result['result'], result['result']
