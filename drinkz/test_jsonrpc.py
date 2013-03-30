@@ -27,16 +27,15 @@ def jsonrpc(method, params):
 
     status = d['status']
     headers = d['headers']
-    result_dict =  simplejson.loads(''.join(results))
+    results_dict =  simplejson.loads(''.join(results))
 
-    return (status, headers, result_dict)
+    return (status, headers, results_dict)
 
 def test_convert_units_to_ml():
     status, headers, result = jsonrpc('convert_units_to_ml', ['1 oz'])
 
     assert status == '200 OK'
     assert result['error'] == None
-    
     assert result['result'] == 29.5735, result['result']
 
 
@@ -45,9 +44,6 @@ def test_get_recipe_names():
 
     assert status == '200 OK'
     assert result['error'] == None
-
-    print headers
-
     assert 'scotch on the rocks' in result['result'], result['result']
 
 def test_get_liquor_inventory():

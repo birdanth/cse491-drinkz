@@ -13,6 +13,7 @@ except OSError:
 
 
 ### POPULATE DB (from file or inline)
+
 try:
     db.load_db('initDatabase')
 except:
@@ -21,7 +22,7 @@ except:
 
     db.add_bottle_type('Uncle Herman\'s', 'moonshine', 'blended scotch')
     db.add_to_inventory('Uncle Herman\'s', 'moonshine', '5 liter')
-                
+                    
     db.add_bottle_type('Gray Goose', 'vodka', 'unflavored vodka')
     db.add_to_inventory('Gray Goose', 'vodka', '1 liter')
 
@@ -34,14 +35,14 @@ except:
 
 
     r = recipes.Recipe('vodka martini', [('unflavored vodka', '6 oz'),
-                                             ('vermouth', '1.5 oz')])
+                                            ('vermouth', '1.5 oz')])
     db.add_recipe(r)
 
 
     r = recipes.Recipe('vomit inducing martini', [('orange juice',
-                                                       '6 oz'),
-                                                      ('vermouth',
-                                                       '1.5 oz')])
+                                                        '6 oz'),
+                                                        ('vermouth',
+                                                        '1.5 oz')])
     db.add_recipe(r)
 
 
@@ -54,7 +55,7 @@ def index():
                     <title>Index</title>
                     <style type ="text/css"> h1{color:red;text-align:center;} </style>
                     <script type="text/javascript">
-                        function alert()
+                        function test_alert()
                         {
                             alert("Testing Alert System");
                         }
@@ -63,7 +64,7 @@ def index():
                 <body style="text-align:left" >
                     <h1>cse491-drinkz </h1>
                     <p style="text-align:center">
-                    <input type="button" onclick="alert()" value="Alert System"  />
+                    <input type="button" onclick="test_alert()" value="Alert System"  />
                     </p>
                     <a href='liquor_types.html'>Liquor types</a>
                     <p>
