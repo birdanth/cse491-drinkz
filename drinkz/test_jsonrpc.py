@@ -1,7 +1,7 @@
 import app
 import urllib
 from StringIO import StringIO
-from . import db, recipes
+from . import db, recipes, unitconversion
 import make_html
 import simplejson
 
@@ -35,7 +35,7 @@ def test_convert_units_to_ml():
     status, headers, result = jsonrpc('convert_units_to_ml', ['1 oz'])
 
     assert status == '200 OK'
-    assert result['result'] == 2.9573, result['result']
+    assert result['result'] == 29.5735, result['result']
 
 
 

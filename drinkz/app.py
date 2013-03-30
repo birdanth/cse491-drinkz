@@ -131,7 +131,7 @@ class SimpleApp(object):
         return [data]
     
     def rpc_convert_units_to_ml(self, amount):
-        return unitconversion.convert_to_ml(amount)
+        return db.convert_to_ml(amount)
 
     def rpc_get_recipe_names(self):
         return list(db.get_all_recipes())
