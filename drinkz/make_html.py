@@ -104,12 +104,7 @@ def recipes():
 ###
 
 def inventory():
-    html = """<title>Inventory</title>
-                  <h1 style="color:red" >Inventory </h1> 
-
-
-              <ul>
-           """
+    html = ""
     for m, l in db.get_liquor_inventory():
         amount = db.get_liquor_amount(m, l)
         html += '<li>%s' % m
@@ -117,7 +112,12 @@ def inventory():
         html += ' - %s</li>' % amount
     html += """</ul>"""
     html += "<a href='index.html'> HOME </a>"
-    return html
+    #var = dict( {inventory : html}) 
+
+    inv =  env.get_template('inventory.html')
+    return inv.render(inventory=html).encode('ascii', 'ignore')
+
+
 
 ###
 

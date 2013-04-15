@@ -84,10 +84,10 @@ def load_recipes(fp):
 	#print 'INGREDIENTS: ' , ing 
         
 	rec = name,ing
-        print 'rec:  ' , rec
+        #print 'rec:  ' , rec
 	r = recipes.Recipe(rec[0],rec[1])
-	print 'RECIPE NAME: ' , r.name
-	print 'RECIPE ING: ' , r.ingredients
+	#print 'RECIPE NAME: ' , r.name
+	#print 'RECIPE ING: ' , r.ingredients
         db.add_recipe(r)
 
     return n

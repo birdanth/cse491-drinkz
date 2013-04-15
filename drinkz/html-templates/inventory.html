@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Inventory{% endblock %}
+
+{% block h1 %}Inventory{% endblock %}
+
+{% block content %}
+
+<p>
+    {% set output = inventory %}
+    {{ output }}
+</p>
+
+<a href="add_to_inventory.html">Add to Inventory </a>
+
+{% endblock %}
