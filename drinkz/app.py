@@ -132,7 +132,7 @@ class SimpleApp(object):
         return db.convert_to_ml(amount)
 
     def rpc_get_recipe_names(self):
-        return list(db.get_all_recipes())
+        return dict(db.get_all_recipes())
 
     def rpc_get_liquor_inventory(self):
         return list(make_html.db.get_liquor_inventory())
