@@ -2,7 +2,7 @@
 """
 Database functionality for drinkz information.
 """
-import  unitconversion
+from . import  unitconversion
 from cPickle import dump, load
 
 # private singleton variables at module level
