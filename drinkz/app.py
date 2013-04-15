@@ -30,6 +30,7 @@ js_headers = [('Content-type', 'text/javascript')]
 
 class SimpleApp(object):
     def __call__(self, environ, start_response):
+        make_html.baseTemplate()
         path = environ['PATH_INFO']
         fn_name = dispatch.get(path, 'error')
 
@@ -41,14 +42,14 @@ class SimpleApp(object):
         if fn is None:
             start_response("404 Not Found", html_headers)
             return ["No path %s found" % path]
-
+        
         return fn(environ, start_response)
           
     def index(self, environ, start_response):
         data = make_html.index()
         
         start_response('200 OK', list(html_headers))
-        return [data]
+        return data
 
     def liquor_types(self, environ, start_response):
         data = make_html.liquor_types()

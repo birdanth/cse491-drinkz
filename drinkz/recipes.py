@@ -2,7 +2,7 @@
 import db, unitconversion
 
 class Recipe(object):
-    def __init__(self, name, ingredients):
+    def __init__( self, name='', ingredients= [()] ):
         self.name = name
         self.ingredients = ingredients
         # you could also check here for properly formatted ingredients
@@ -26,3 +26,5 @@ class Recipe(object):
                 needed.append((generic_type, amount_needed - max_amount))
 
         return needed
+
+	

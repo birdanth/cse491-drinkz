@@ -1,0 +1,23 @@
+<html style="background-color:gray" >
+    <head style="font-family:verdana;">
+        <style type ="text/css"> h1{color:red;text-align:center;} </style>
+        {% block headers %}
+        {% endblock %}
+    </head>
+    <body>    
+        <div class ='jinja-title'> 
+            {% block h1 %}
+            {% endblock %}
+        </div>
+           
+        <div class='jinja-body'>
+            
+            {% block content %}
+            {% endblock %}
+
+        </div>        
+
+    </body>
+</html>
+
+

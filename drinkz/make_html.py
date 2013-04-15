@@ -3,15 +3,19 @@
 import recipes
 import db
 import os
+from jinja2 import Environment, PackageLoader
 
-
+### make a directory to store the generated html files
 try:
     os.mkdir('html')
 except OSError:
     # already exists
     pass
 
-
+### Initialize the html templates - http://jinja.pocoo.org/docs/api/
+env = Environment( loader = PackageLoader('drinkz', 'html-templates') )
+print env
+    
 ### POPULATE DB (from file or inline)
 
 try:
@@ -48,34 +52,16 @@ except:
 
 ###
 
+def baseTemplate():
+    base =  env.get_template('base.html')
+    return base.render()
+    
+
 def index():
-    return  """
-            <html style="background-color:gray" >
-                <head style="font-family:verdana;">
-                    <title>Index</title>
-                    <style type ="text/css"> h1{color:red;text-align:center;} </style>
-                    <script type="text/javascript">
-                        function test_alert()
-                        {
-                            alert("Testing Alert System");
-                        }
-                    </script>
-                </head>
-                <body style="text-align:left" >
-                    <h1>cse491-drinkz </h1>
-                    <p style="text-align:center">
-                    <input type="button" onclick="test_alert()" value="Alert System"  />
-                    </p>
-                    <a href='liquor_types.html'>Liquor types</a>
-                    <p>
-                    <a href='recipes.html'>Recipes</a>
-                    <p>
-                    <a href='inventory.html'>Inventory</a>
-                    <p>
-                    <a href='conversion.html'>Convert to ML </a>
-                </body>
-            </html>
-            """
+    index = env.get_template('index.html')
+    #print index - use encode('ascii','ignore') to return string value
+    return index.render().encode('ascii', 'ignore')
+
 ###
 def liquor_types():
     html = """<title>Liquor Types</title>

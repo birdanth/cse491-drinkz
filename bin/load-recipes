@@ -1,0 +1,35 @@
+#! /usr/bin/env python
+import sys
+import _mypath
+
+from drinkz.load_bulk_data import load_recipes
+
+def main(args):
+   if len(args) != 2:
+      print >>sys.stderr, 'Usage: %s recipes.csv ' % args[0]
+      return -1
+
+   recipe_file = args[1]
+
+   fp = open(recipe_file)
+   try:
+      n = load_recipes(fp)
+   finally:
+      fp.close()
+
+   print 'Loaded %d bulk recipes.' % n
+   return 0
+
+# run the 'main()' function if this script is run from the command line;
+# this will not execute if the file is imported.
+#
+# pass in command line arguments verbatim, as a list.
+
+if __name__ == '__main__':
+   exit_code = main(sys.argv)
+   sys.exit(exit_code)
+
+
+
+
+

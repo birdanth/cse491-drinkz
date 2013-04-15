@@ -213,3 +213,15 @@ def test_get_liquor_inventory():
 
     assert x == [('Johnnie Walker', 'Black Label')], x
 
+
+def test_script_load_recipes():
+    db._reset_db()
+
+    scriptpath = 'bin/load-recipes'
+    module = imp.load_source('llt', scriptpath)
+    exit_code = module.main([scriptpath, 'test-data/sampleRecipes.txt'])
+
+    assert not  db.get_all_recipes() , db.get_all_recipes()
+
+    assert exit_code == 0, 'non zero exit code %s' % exit_code
+

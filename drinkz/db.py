@@ -2,7 +2,7 @@
 """
 Database functionality for drinkz information.
 """
-import  unitconversion
+from . import  unitconversion
 from cPickle import dump, load
 
 # private singleton variables at module level
@@ -86,6 +86,13 @@ def get_recipe(name):
 
 def get_all_recipes():
     return _recipes.values()
+
+def recipes_satisfied():
+    available = []
+    for rec in _recipes:
+        if not rec.need_ingredients():
+	    available.append(rec)
+    return available
 
 def check_inventory_for_type(generic_type):
     matching_ml = []

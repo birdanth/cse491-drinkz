@@ -10,7 +10,7 @@ from drinkz.app import SimpleApp
 
 if __name__ == '__main__':
     import random, socket
-    port = random.randint(8000, 9999)
+    port = 8082
     
     app = SimpleApp()
     
