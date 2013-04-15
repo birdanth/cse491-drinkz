@@ -62,9 +62,17 @@ def index():
                     </script>
                 </head>
                 <body style="text-align:left" >
-                    <h1>HEADER </h1>
+                    <h1>cse491-drinkz </h1>
                     <p style="text-align:center">
                     <input type="button" onclick="test_alert()" value="Alert System"  />
+                    </p>
+                    <a href='liquor_types.html'>Liquor types</a>
+                    <p>
+                    <a href='recipes.html'>Recipes</a>
+                    <p>
+                    <a href='inventory.html'>Inventory</a>
+                    <p>
+                    <a href='conversion.html'>Convert to ML </a>
                 </body>
             </html>
             """
