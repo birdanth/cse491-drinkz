@@ -40,7 +40,7 @@ def test_convert_units_to_ml():
 
 
 def test_get_recipe_names():
-    status, headers, result = jsonrpc('get_recipe_names', {})
+    status, headers, result = jsonrpc('get_recipe_names', [])
 
     assert status == '200 OK'
     assert result['error'] == None

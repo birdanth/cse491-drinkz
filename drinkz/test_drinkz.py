@@ -221,7 +221,7 @@ def test_script_load_recipes():
     module = imp.load_source('llt', scriptpath)
     exit_code = module.main([scriptpath, 'test-data/sampleRecipes.txt'])
 
-    assert not  db.get_all_recipes() , db.get_all_recipes()
+    assert  db.get_all_recipes() , db.get_all_recipes()
 
     assert exit_code == 0, 'non zero exit code %s' % exit_code
 
