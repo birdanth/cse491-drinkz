@@ -30,7 +30,6 @@ js_headers = [('Content-type', 'text/javascript')]
 
 class SimpleApp(object):
     def __call__(self, environ, start_response):
-
         path = environ['PATH_INFO']
         fn_name = dispatch.get(path, 'error')
 
@@ -74,8 +73,6 @@ class SimpleApp(object):
         
         start_response('200 OK', list(html_headers))
         return [data]
-    
-
         
     def somefile(self, environ, start_response):
         content_type = 'text/html'
@@ -129,7 +126,32 @@ class SimpleApp(object):
 
         start_response('200 OK', list(html_headers))
         return [data]
+    
+    def rpc_convert_units_to_ml(self, amount):
+        return db.convert_to_ml(amount)
 
+    def rpc_get_recipe_names(self):
+        return list(make_html.db.get_all_recipes())
+
+    def rpc_get_liquor_inventory(self):
+        return list(make_html.db.get_liquor_inventory())
+
+    def _decode(self, json):
+        return simplejson.loads(json)
+
+    def _dispatch(self, json):
+        rpc_request = self._decode(json)
+
+        method = rpc_request['method']
+        params = rpc_request['params']
+        
+        rpc_fn_name = 'rpc_' + method
+        fn = getattr(self, rpc_fn_name)
+        result = fn(*params)
+
+        response = { 'result' : result, 'error' : None, 'id' : 1 }
+        response = simplejson.dumps(response)
+        return str(response)
 
     def dispatch_rpc(self, environ, start_response):
         # POST requests deliver input data via a file-like handle,
@@ -153,23 +175,6 @@ class SimpleApp(object):
        
         start_response('200 OK', list(html_headers))
         return [data]
-
-    def _decode(self, json):
-        return simplejson.loads(json)
-
-    def _dispatch(self, json):
-        rpc_request = self._decode(json)
-
-        method = rpc_request['method']
-        params = rpc_request['params']
-        
-        rpc_fn_name = 'rpc_' + method
-        fn = getattr(self, rpc_fn_name)
-        result = fn(*params)
-
-        response = { 'result' : result, 'error' : None, 'id' : 1 }
-        response = simplejson.dumps(response)
-        return str(response)
 
     def rpc_hello(self):
         return 'world!'
