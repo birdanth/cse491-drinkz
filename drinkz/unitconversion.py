@@ -1,6 +1,7 @@
 #unit conversion
 
 def convert_to_ml(amount):
+<<<<<<< HEAD
 	num, units = amount.split()
 	num = float(num)
 	units = units.lower()
@@ -14,6 +15,6 @@ def convert_to_ml(amount):
 	elif units == 'gallons' or units == 'gallon' or units == 'gall':
 		num = 3785.41*num
 	else:
-		print ('unknown unit type, not added to total')
+		print 'unknown unit type, not added to total'
 
 	return num
