@@ -64,30 +64,21 @@ def index():
 
 ###
 def liquor_types():
-    html = """<title>Liquor Types</title>
-                  <h1 style="color:red" >Liquor Types </h1> 
-
-
-              <ul>
-           """
+    html = ""    
     for m, l, g in db._bottle_types_db:
         html += '<li>%s' % m
         html += ' - %s' % l
         html += ' - %s</li>' % g
     html += """</ul>"""
-    html += "<a href='index.html'> HOME </a>"
-    return html
+
+    liquorTypes =  env.get_template('liquor_types.html')
+    return liquorTypes.render(liquor_types=html).encode('ascii', 'ignore')
 
 ###
 
 
 def recipes():
-    html = """<title>Recipes</title>
-                  <h1 style="color:red" >Recipes </h1> 
-
-
-              <ul>
-           """
+    html = ""
     for r in db.get_all_recipes():
             html += '<li>%s<ul>' % r.name
             for name, amount in r.ingredients:
@@ -95,8 +86,9 @@ def recipes():
                 html+= ' - %s'% amount
             html+= '</ul>'
     html += """</ul>"""
-    html += "<a href='index.html'> HOME </a>"
-    return html
+    
+    recipes =  env.get_template('recipes.html')
+    return recipes.render(recipes=html).encode('ascii', 'ignore')
 
     
 
@@ -111,8 +103,6 @@ def inventory():
         html += ' - %s' % l
         html += ' - %s</li>' % amount
     html += """</ul>"""
-    html += "<a href='index.html'> HOME </a>"
-    #var = dict( {inventory : html}) 
 
     inv =  env.get_template('inventory.html')
     return inv.render(inventory=html).encode('ascii', 'ignore')
@@ -122,12 +112,8 @@ def inventory():
 ###
 
 def conversion_form():
-    return """ <title>Unit Converter</title>
-                <h1 style="color:red" >Unit Converter</h1>
-                    <form action='converter_recv'>
-                        Amount? <input type='text' name='inputValue' size'20'>
-                        <input type='submit'>
-                    </form>
-            """
+    conversion =  env.get_template('conversion.html')
+    return conversion.render().encode('ascii', 'ignore')
+
 
 

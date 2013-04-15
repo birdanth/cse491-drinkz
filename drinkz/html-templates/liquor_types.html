@@ -1,1 +1,18 @@
-liquor types
+{% extends "base.html" %}
+
+{% block title %}Liquor Types{% endblock %}
+
+{% block h1 %}Liquor Types{% endblock %}
+
+{% block content %}
+
+    <p>
+        {% set output = liquor_types %}
+        {{ output }}
+    </p>
+    <ul>
+        <a href="add_to_liquor_types.html">Add to Liquor Types </a>
+        <a href='index.html'> HOME </a>
+    </ul>
+    
+{% endblock %}

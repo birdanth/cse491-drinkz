@@ -6,11 +6,13 @@
 
 {% block content %}
 
-<p>
-    {% set output = inventory %}
-    {{ output }}
-</p>
-
-<a href="add_to_inventory.html">Add to Inventory </a>
-
+    <p>
+        {% set output = inventory %}
+        {{ output }}
+    </p>
+    <ul>
+        <a href="add_to_inventory.html">Add to Inventory </a>
+        <a href='index.html'> HOME </a>
+    </ul>
+    
 {% endblock %}

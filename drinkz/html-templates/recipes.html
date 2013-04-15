@@ -1,1 +1,17 @@
-recipes
+{% extends "base.html" %}
+
+{% block title %}Recipes{% endblock %}
+
+{% block h1 %}Recipes{% endblock %}
+
+{% block content %}
+
+<p>
+    {% set output = recipes %}
+    {{ output }}
+</p>
+<ul>
+    <a href="add_to_recipes.html">Add to Recipes </a>
+    <a href='index.html'> HOME </a>
+</ul>
+{% endblock %}

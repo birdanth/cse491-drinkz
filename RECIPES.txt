@@ -1,0 +1,11 @@
+#bulk loading recipes
+
+Recipies are bulk loaded in the same way inventory is loaded. A comma delimited
+list of first the recipe name followed by the first component of an ingredient
+then followed by the second component (the amount) of that ingredient. This
+can be done for as many ingredients as you would like. The format looks like
+this:
+	Recipe Name, Igredient One Name, Ingredient One Amount
+
+Each line is itereatd through and a list of tuples is made from the Ingredient
+components. 

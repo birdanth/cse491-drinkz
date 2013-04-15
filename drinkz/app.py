@@ -139,7 +139,7 @@ class SimpleApp(object):
         return names
 
     def rpc_get_liquor_inventory(self):
-        return list(make_html.db.get_liquor_inventory())
+        return list(db.get_liquor_inventory())
 
     def _decode(self, json):
         return simplejson.loads(json)

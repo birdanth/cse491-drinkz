@@ -1,1 +1,20 @@
-converison
+{% extends "base.html" %}
+
+{% block title %}Unit Converter{% endblock %}
+
+{% block h1 %}Unit Converter{% endblock %}
+
+{% block content %}
+
+    <p>
+        <form action='converter_recv'>
+            Amount? <input type='text' name='inputValue' size'20'>
+            <input type='submit'>
+        </form>
+    </p>
+    <ul>
+        <a href='index.html'> HOME </a>
+    </ul>
+
+    
+{% endblock %}
