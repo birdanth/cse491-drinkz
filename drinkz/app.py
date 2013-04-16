@@ -127,6 +127,39 @@ class SimpleApp(object):
 
         start_response('200 OK', list(html_headers))
         return [data]
+
+    def liquor_types_recv(self, environ, start_response):
+        formdata = environ['QUERY_STRING']
+        results = urlparse.parse_qs(formdata)
+
+        amount = results['inputValue'][0]   
+        content_type = 'text/html'
+        data = "Amount Entered: %s | Amount in MilliLeters(ML): %s |  <a href='./'>HOME </a>" % (amount, db.convert_to_ml(amount))
+
+        start_response('200 OK', list(html_headers))
+        return [data]
+    
+    def inventory_recv(self, environ, start_response):
+        formdata = environ['QUERY_STRING']
+        results = urlparse.parse_qs(formdata)
+
+        amount = results['inputValue'][0]   
+        content_type = 'text/html'
+        data = "Amount Entered: %s | Amount in MilliLeters(ML): %s |  <a href='./'>HOME </a>" % (amount, db.convert_to_ml(amount))
+
+        start_response('200 OK', list(html_headers))
+        return [data]
+    
+    def recipes_recv(self, environ, start_response):
+        formdata = environ['QUERY_STRING']
+        results = urlparse.parse_qs(formdata)
+
+        amount = results['inputValue'][0]   
+        content_type = 'text/html'
+        data = "Amount Entered: %s | Amount in MilliLeters(ML): %s |  <a href='./'>HOME </a>" % (amount, db.convert_to_ml(amount))
+
+        start_response('200 OK', list(html_headers))
+        return [data]
     
     def rpc_convert_units_to_ml(self, amount):
         return db.convert_to_ml(amount)

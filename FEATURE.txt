@@ -1,0 +1,35 @@
+Food Integration Use Case
+-------------------------
+Case: Breanda [is] bringing Red wine and wants to know if someone is already
+bringing it or if it pairs with any dishes currently being brought.
+
+
+	This use case really has to parts (viz. party attendee profiles and
+recipe to food mapping). Therefore I would implement two different data components -
+one to satisfy each part. 
+
+	I would create an attendee object that has as data members:
+Name/ID (string/double), party_attending (double), food_recipe_bringing (Recipe) or 
+food_ingredients_bringing (list of tuples), and drink_recipe_bringing (Recipe) or 
+drink_ingredients_bringing (list of tuples). This attendee could either bring an entire recipe
+or just ingredients for a recipe. However, it could be implemented to simply have the
+ingredrients and the program will determine if it satisfies a recipe.The recipe to food mapping,
+for drink pairing, would simply be a dictionary (hence mapping). This could be implemented via a
+form on the page that allows the user to input the drink or recipe they are bringing and check the
+database (the one that is currently being implented) and check the dictionary for matching mappings.
+
+	The API would be similar to the one currently being implemented for 'drinkz.' Namely,
+having differnet modules in the back-end consisting of a db.py that is responsible for adding,
+deleting, updating, checking, and any other data driven functionality. Ideally one could write a
+stored procedure in SQL to create a data table that provides the same functionality and make it 
+much easier to add,delete, update, etc using inline SQL via Python's DB API.
+
+	I would prefer the querying be done via user input on some specific (hopefully hidden)
+webpage. If a SQL database is used to store the data, querying becomes easy using SELECT statements
+with variable insertion into the statement based on the user input. I woudl use Jinja to template
+the web pages involved and use JSON remote procedure calls to actually execture the inline
+SQL against the database. For example if c in a cursor to a SQLite database, a funtion 
+'find_pairings' ,that took a drink as a parameter, could do something like
+c.execute('SELECT * FROM pairings WHERE drink=?') - obviously in this case the drink to food
+mapping is captured in the table's structure, as opposed to the aforementioned dictionary 
+implementation.
