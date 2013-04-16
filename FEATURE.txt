@@ -4,7 +4,7 @@ Case: Breanda [is] bringing Red wine and wants to know if someone is already
 bringing it or if it pairs with any dishes currently being brought.
 
 
-	This use case really has to parts (viz. party attendee profiles and
+	This use case really has two parts (viz. party attendee profiles and
 recipe to food mapping). Therefore I would implement two different data components -
 one to satisfy each part. 
 
