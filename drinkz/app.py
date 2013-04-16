@@ -228,7 +228,14 @@ class SimpleApp(object):
         return names
 
     def rpc_get_liquor_inventory(self):
-        return list(db.get_liquor_inventory())
+        db.add_bottle_type('Johnnie Walker', 'Black Label', 'blended scotch')
+        db.add_to_inventory('Johnnie Walker', 'Black Label', '1000 ml')
+        
+        inv = []
+        for mfg,lqr in db.get_liquor_inventory():
+            inv.append((mfg,lqr))
+            
+        return inv
 
     def _decode(self, json):
         return simplejson.loads(json)
