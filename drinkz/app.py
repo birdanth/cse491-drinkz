@@ -7,6 +7,7 @@ import urlparse
 import simplejson
 import make_html
 import db
+import recipes
 
 dispatch = {
     '/' : 'index',
@@ -18,6 +19,9 @@ dispatch = {
     '/add_to_inventory.html' : 'add_to_inventory',
     '/add_to_liquor_types.html' : 'add_to_liquor_types',
     '/add_to_recipes.html' : 'add_to_recipes',
+    '/recipes_recv' : 'recipes_recv',
+    '/inventory_recv' : 'inventory_recv',
+    '/liquor_types_recv' : 'liquor_types_recv',
     '/content' : 'somefile',
     '/error' : 'error',
     '/helmet' : 'helmet',
@@ -183,9 +187,18 @@ class SimpleApp(object):
         formdata = environ['QUERY_STRING']
         results = urlparse.parse_qs(formdata)
 
-        amount = results['inputValue'][0]   
+        name = results['name'][0]
+        ingName = results['ingName'][0]
+        ingAmount = results['ingAmount'][0]    
+      
+        ing = (ingName, ingAmount)
+        rec = name,ing
+        r = recipes.Recipe(rec[0],rec[1])
+        db.add_recipe(r)       
         content_type = 'text/html'
-        data = "Amount Entered: %s | Amount in MilliLeters(ML): %s |  <a href='./'>HOME </a>" % (amount, db.convert_to_ml(amount))
+
+        #data = 'name: %s  ingName:  %s  ingAmount: %s' % (name , ingName, ingAmount) 
+        data = "Recipe ( %s ,[( %s , %s )] ) added <br><br> <a href='./'>HOME </a>" % (name, ingName, ingAmount)
 
         start_response('200 OK', list(html_headers))
         return [data]
@@ -195,7 +208,7 @@ class SimpleApp(object):
 
     def rpc_get_recipe_names(self):
 	names = []
-	for r in db.get_all_recipes():
+	for r in db.get_all_recipes(): 
 	    names.append(r.name)
 
         return names
