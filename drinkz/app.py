@@ -168,10 +168,12 @@ class SimpleApp(object):
         mfg = results['mfg'][0]
         lqr = results['lqr'][0]
         typ = results['typ'][0]
+        db.add_bottle_type(mfg,lqr,typ)
         
         content_type = 'text/html'
-        data = "Amount Entered: %s | Amount in MilliLeters(ML): %s |  <a href='./'>HOME </a>" % (amount, db.convert_to_ml(amount))
-
+        data1 = " *** Bottle Type ( %s , %s , %s  ) added <br><br>" % (mfg, lqr, typ)
+        data2 =  make_html.liquor_types()
+        data = data1 + data2
         start_response('200 OK', list(html_headers))
         return [data]
     
