@@ -165,7 +165,10 @@ class SimpleApp(object):
         formdata = environ['QUERY_STRING']
         results = urlparse.parse_qs(formdata)
 
-        amount = results['inputValue'][0]   
+        mfg = results['mfg'][0]
+        lqr = results['lqr'][0]
+        typ = results['typ'][0]
+        
         content_type = 'text/html'
         data = "Amount Entered: %s | Amount in MilliLeters(ML): %s |  <a href='./'>HOME </a>" % (amount, db.convert_to_ml(amount))
 
@@ -190,16 +193,17 @@ class SimpleApp(object):
         name = results['name'][0]
         ingName = results['ingName'][0]
         ingAmount = results['ingAmount'][0]    
-      
-        ing = (ingName, ingAmount)
+        ing = []
+        ing.append((ingName, ingAmount))
         rec = name,ing
         r = recipes.Recipe(rec[0],rec[1])
         db.add_recipe(r)       
         content_type = 'text/html'
 
         #data = 'name: %s  ingName:  %s  ingAmount: %s' % (name , ingName, ingAmount) 
-        data = "Recipe ( %s ,[( %s , %s )] ) added <br><br> <a href='./'>HOME </a>" % (name, ingName, ingAmount)
-
+        data1 = " *** Recipe ( %s ,[( %s , %s )] ) added <br><br>" % (name, ingName, ingAmount)
+        data2 =  make_html.recipes()
+        data = data1 + data2
         start_response('200 OK', list(html_headers))
         return [data]
     
