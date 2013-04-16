@@ -125,7 +125,7 @@ class SimpleApp(object):
 
     def helmet(self, environ, start_response):
         content_type = 'image/gif'
-        data = open('Spartan-helmet-Black-150-pxls.gif', 'rb').read()
+        data = open('../Spartan.gif', 'rb').read()
 
         start_response('200 OK', [('Content-type', content_type)])
         return [data]
@@ -180,12 +180,20 @@ class SimpleApp(object):
     def inventory_recv(self, environ, start_response):
         formdata = environ['QUERY_STRING']
         results = urlparse.parse_qs(formdata)
-
-        amount = results['inputValue'][0]   
+        
+        mfg = results['mfg'][0]
+        lqr = results['lqr'][0]
+        typ = results['typ'][0]
+        try:
+            db.add_to_inventory(mfg,lqr,typ)
+            data1 = " *** Inventory Item ( %s , %s , %s  ) added <br><br>" % (mfg, lqr, typ)
+        except:
+            data1 = " MISSING LIQUOR TYPE  - try again <br><br> "
+            
         content_type = 'text/html'
-        data = "Amount Entered: %s | Amount in MilliLeters(ML): %s |  <a href='./'>HOME </a>" % (amount, db.convert_to_ml(amount))
-
-        start_response('200 OK', list(html_headers))
+        data2 =  make_html.inventory()
+        data = data1 + data2       
+	start_response('200 OK', list(html_headers))
         return [data]
     
     def recipes_recv(self, environ, start_response):

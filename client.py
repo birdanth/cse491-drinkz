@@ -48,7 +48,7 @@ def form():
         s.connect( (hostName, port) )
         print 'connected to adriatic at port 8082'
 
-        s.send("GET /inventory.html HTTP/1.0\r\n\r\n")
+        s.send("GET /recipes_recv?name=recAddTest&ingName=testAddIng&ingAmount=123+oz HTTP/1.0\r\n\r\n")
 
         #directly from sockets page
         response = ""
@@ -79,7 +79,9 @@ def image():
         s.connect( (hostName, port) )
         print 'connected to adriatic at port 8082'
 
-        s.send("GET /helmet.html HTTP/1.0\r\n\r\n")
+        s.send("GET /helmet HTTP/1.0\r\n\r\n")
+
+	#picture = os.path.dirname(__file__) + "/Spartan.gif"
 
         #directly from sockets page
         response = ""

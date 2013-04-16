@@ -1,0 +1,6 @@
+To test the client.py file, all you need to do is run the server in a seperate console ( the 
+hostname assumed is adriatic.cse.msu.edu and the port assumed is 8082). Once it is running, in
+a seperate console, within cse491drinkz/ run 'python client.py' and you will be prompted to test
+each function seperately (i.e. get(), form(), and image() ). If you say yes a succesfull test will
+result in the printing of the html within the response message from the server. To save any
+anticipation, it won't not succeed.
