@@ -62,7 +62,6 @@ def index():
     #print index - use encode('ascii','ignore') to return string value
     return index.render().encode('ascii', 'ignore')
 
-###
 def liquor_types():
     html = ""    
     for m, l, g in db._bottle_types_db:
@@ -74,8 +73,9 @@ def liquor_types():
     liquorTypes =  env.get_template('liquor_types.html')
     return liquorTypes.render(liquor_types=html).encode('ascii', 'ignore')
 
-###
-
+def add_to_liquor_types():
+    addToLiquorTypes =  env.get_template('add_to_liquor_types.html')
+    return addToLiquorTypes.render().encode('ascii', 'ignore')
 
 def recipes():
     html = ""
@@ -91,9 +91,10 @@ def recipes():
     return recipes.render(recipes=html).encode('ascii', 'ignore')
 
     
+def add_to_recipes():
+    addToRecipes =  env.get_template('add_to_recipes.html')
+    return addToRecipes.render().encode('ascii', 'ignore')
 
-
-###
 
 def inventory():
     html = ""
@@ -108,8 +109,11 @@ def inventory():
     return inv.render(inventory=html).encode('ascii', 'ignore')
 
 
+def add_to_inventory():
+    addToInventory =  env.get_template('add_to_inventory.html')
+    return addToInventory.render().encode('ascii', 'ignore')
 
-###
+
 
 def conversion_form():
     conversion =  env.get_template('conversion.html')

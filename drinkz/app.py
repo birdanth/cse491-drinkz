@@ -15,6 +15,9 @@ dispatch = {
     '/inventory.html' : 'inventory',
     '/liquor_types.html' : 'liquor_types',
     '/conversion.html' : 'conversion',
+    '/add_to_inventory.html' : 'add_to_inventory',
+    '/add_to_liquor_types.html' : 'add_to_liquor_types',
+    '/add_to_recipes.html' : 'add_to_recipes',
     '/content' : 'somefile',
     '/error' : 'error',
     '/helmet' : 'helmet',
@@ -44,31 +47,57 @@ class SimpleApp(object):
             return ["No path %s found" % path]
         
         return fn(environ, start_response)
-          
+    
+    ## Main Page      
     def index(self, environ, start_response):
         data = make_html.index()
         
         start_response('200 OK', list(html_headers))
         return data
-
-    def liquor_types(self, environ, start_response):
-        data = make_html.liquor_types()
-        
-        start_response('200 OK', list(html_headers))
-        return [data]
-           
-    def recipes(self, environ, start_response):
-        data = make_html.recipes()
-        
-        start_response('200 OK', list(html_headers))
-        return [data]
     
+    ## Inventory Page    
     def inventory(self, environ, start_response):
         data = make_html.inventory()
         
         start_response('200 OK', list(html_headers))
         return [data]
     
+    ## Liquor Types Page
+    def liquor_types(self, environ, start_response):
+        data = make_html.liquor_types()
+        
+        start_response('200 OK', list(html_headers))
+        return [data]
+    
+    ## Recipes Page       
+    def recipes(self, environ, start_response):
+        data = make_html.recipes()
+        
+        start_response('200 OK', list(html_headers))
+        return [data]
+    
+    ## Add to Inventory Form    
+    def add_to_inventory(self, environ, start_response):
+        data = make_html.add_to_inventory()
+        
+        start_response('200 OK', list(html_headers))
+        return [data]
+    
+    ## Add to Liquor Types Form
+    def add_to_liquor_types(self, environ, start_response):
+        data = make_html.add_to_liquor_types()
+        
+        start_response('200 OK', list(html_headers))
+        return [data]
+    
+    ## Add to Recipes Form    
+    def add_to_recipes(self, environ, start_response):
+        data = make_html.add_to_recipes()
+        
+        start_response('200 OK', list(html_headers))
+        return [data]
+
+    ## Perform Unit Conversion
     def conversion(self, environ, start_response):
         data = make_html.conversion_form()
         
