@@ -1,6 +1,39 @@
 #!/user/bin/env python
 import socket, sys
 
+
+def post():
+
+    bool = raw_input('Test Post?')
+
+    if bool == 'no' or bool == 'n':
+        return -1
+    else:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #TCP client ( specifie$
+
+        hostName = 'adriatic.cse.msu.edu'
+        port       = 8082
+
+        ## initiate TCP connection
+        s.connect( (hostName, port) )
+        print 'connected to adriatic at port 8082'
+
+        s.send("POST /posting HTTP/1.0\r\n\r\n")
+
+        #directly from sockets page
+        response = ""
+        while True:
+            buf = s.recv(1000) # buffer size of 1000
+            if not buf:
+                break
+            response += buf
+
+        s.close()
+
+        print 'reponse: ' + response
+
+
+
 def get():
     
     bool = raw_input('Test Get?')
@@ -96,6 +129,7 @@ def image():
         print 'reponse: ' + response
 
 if __name__ == '__main__':
+    post()
     get()
     form()
     image()

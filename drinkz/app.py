@@ -28,19 +28,22 @@ dispatch = {
     '/form' : 'form',
     '/recv' : 'recv',
     '/converter_recv' : 'converter_recv',
-    '/rpc'  : 'dispatch_rpc'
+    '/rpc'  : 'dispatch_rpc',
+    '/posting'  : 'posting'
 }
 
 html_headers = [('Content-type', 'text/html')]
 css_headers = [('Content-type', 'text/css')]
 js_headers = [('Content-type', 'text/javascript')]
+plain_headers = [('Content-type', 'text/plain')]
 
 class SimpleApp(object):
     def __call__(self, environ, start_response):
         make_html.baseTemplate()
         path = environ['PATH_INFO']
         fn_name = dispatch.get(path, 'error')
-
+	
+	print 'environ variables:' , environ['REQUEST_METHOD']
         # retrieve 'self.fn_name' where 'fn_name' is the
         # value in the 'dispatch' dictionary corresponding to
         # the 'path'.
@@ -52,6 +55,17 @@ class SimpleApp(object):
         
         return fn(environ, start_response)
     
+    ## Main Page
+    def posting(self, environ, start_response):
+        #data = make_html.index()
+	if environ['REQUEST_METHOD'] == 'POST':
+	    data = 'you just did a post operation!'
+	else:
+	    data = 'you fucked up'
+        start_response('200 OK', list(plain_headers))
+        return data
+
+
     ## Main Page      
     def index(self, environ, start_response):
         data = make_html.index()

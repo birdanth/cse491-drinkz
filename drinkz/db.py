@@ -4,11 +4,14 @@ Database functionality for drinkz information.
 """
 from . import  unitconversion
 from cPickle import dump, load
+import sqlite3, os
 
 # private singleton variables at module level
 _bottle_types_db = set()
 _inventory_db = {}
 _recipes = {}
+database = sqlite3.connect('tables.db')
+
 
 def _reset_db():
     "A method only to be used during testing -- toss the existing db info."
