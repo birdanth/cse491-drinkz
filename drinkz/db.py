@@ -10,8 +10,18 @@ import sqlite3, os
 _bottle_types_db = set()
 _inventory_db = {}
 _recipes = {}
-database = sqlite3.connect('tables.db')
 
+
+try:
+    os.unlink('tables.db')
+except OSError:
+    pass
+
+database = sqlite3.connect('tables.db')
+c = database.cursor()
+
+# create a table for each above db type 
+#c.execute(' CREATE TABLE bottle_types ( mfg TEXT, lqr TEXT, typ TEXT )
 
 def _reset_db():
     "A method only to be used during testing -- toss the existing db info."
