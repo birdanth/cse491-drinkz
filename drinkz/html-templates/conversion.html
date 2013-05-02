@@ -2,19 +2,53 @@
 
 {% block title %}Unit Converter{% endblock %}
 
-{% block h1 %}Unit Converter{% endblock %}
+{% block h1 %}
+
+Unit Converter
+
+<script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+
+{% endblock %}
 
 {% block content %}
 
-    <p>
-        <form action='converter_recv'>
-            Amount? <input type='text' name='inputValue' size'20'>
-            <input type='submit'>
-        </form>
-    </p>
+<b>conversion via ajax</b>
+
+<p>
+AMOUNT? <input type='text' class='a' value='' name='inputValue size='20' />
+<p class='toupdate' />
+
+<script type="text/javascript">
+
+function update_result(a) {
+   text = '<font color="red"><b>' + a  + '</font></b>';
+   $('p.toupdate').html(text);
+}
+
+
+function convert() {
+ a = $('input.a').val();
+ $.ajax({
+     url: '/rpc', 
+     data: JSON.stringify ({method:'convert_units_to_ml', params:[a], id:"0"} ),
+     type: "GET",
+     dataType: "json",
+     success: function (data) { update_result(a, data.result) },
+     error: function (err)  { alert ("Error");}
+  });
+}
+
+
+$('input.a').change(convert);
+
+
+</script>
+
+
+
     <ul>
+	main body isnt showing up when I import jquery stuff in header - check conversion.html
         <a href='index.html'> HOME </a>
     </ul>
 
-    
 {% endblock %}
