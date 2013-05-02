@@ -73,9 +73,21 @@ def liquor_types():
     liquorTypes =  env.get_template('liquor_types.html')
     return liquorTypes.render(liquor_types=html).encode('ascii', 'ignore')
 
+def pairings():
+    html = ""
+    for item in db.get_pairings():
+        html += '<li>%s' % item
+    html += """</ul>"""
+
+    pairings =  env.get_template('pairings.html')
+    return pairings.render(pairings=html).encode('ascii', 'ignore')
+
+
 def add_to_liquor_types():
     addToLiquorTypes =  env.get_template('add_to_liquor_types.html')
     return addToLiquorTypes.render().encode('ascii', 'ignore')
+
+
 
 def recipes():
     html = ""

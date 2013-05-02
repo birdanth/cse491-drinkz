@@ -37,12 +37,21 @@ def test_save_to_db():
     db.save_db_tables('tables.db')
     print db.print_contents('tables.db')
 
-    assert False
+    assert True
 
 def test_load_from_db():
 
     print 'LOADING FROM DATABASE'
 
     db.load_db_tables('tables.db')
+
+    assert True
+
+
+def test_pairings():
+  
+    print 'PAIRINGS!!!!'
+    
+    print db.get_pairings()
 
     assert False

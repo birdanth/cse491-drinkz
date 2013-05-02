@@ -99,6 +99,20 @@ def print_contents(db_name):
     return contents
 
 
+def get_pairings():
+    contents = []
+    print_conn = sqlite3.connect('tables.db')
+    print_cursor = print_conn.cursor()
+    print_cursor.execute("INSERT INTO pairings ( rec_name, drink_name) VALUES( 'Steak au Poivre', 'Beringer Cabernet 2006' )")  
+    print_cursor.execute("SELECT * from pairings")
+    contents.append( " PAIRINGS: ")
+    contents.append( print_cursor.fetchall() )
+    print_conn.close()
+    return contents
+
+
+
+
 def save_db_tables(db_name):
 
     conn = sqlite3.connect(db_name)

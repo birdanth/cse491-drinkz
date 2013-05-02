@@ -25,6 +25,7 @@ dispatch = {
     '/login1_process' : 'login1_process',
     '/logout' : 'logout',
     '/status' : 'status',
+    '/pairings.html' : 'pairings',
     '/recipes.html' : 'recipes',
     '/inventory.html' : 'inventory',
     '/liquor_types.html' : 'liquor_types',
@@ -171,6 +172,14 @@ class SimpleApp(object):
         start_response('200 OK', list(html_headers))
         return [data]
     
+    ## Pairings Page
+    def pairings(self, environ, start_response):
+        data = make_html.pairings()
+
+        start_response('200 OK', list(html_headers))
+        return [data]
+
+
     ## Recipes Page       
     def recipes(self, environ, start_response):
         data = make_html.recipes()
