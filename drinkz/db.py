@@ -29,6 +29,13 @@ c.execute("CREATE TABLE if not exists inventory ( mfg TEXT , lqr TEXT, amt INTEG
 # recipes
 c.execute("CREATE TABLE if not exists recipes ( recipe TEXT )")
 
+# recipe -> drink mapping
+c.execute("CREATE TABLE if not exists pairings ( rec_name TEXT, drink_name TEXT )")
+
+# add some sample mappings
+c.execute("INSERT INTO pairings ( rec_name, drink_name) VALUES( 'Steak au Poivre', 'Beringer Cabernet 2006' )")  
+
+
 db_conn.commit()
 db_conn.close()
 
@@ -134,25 +141,13 @@ def load_db_tables(db_name):
 
     rs = c.execute("SELECT * FROM recipes")
     for item in rs:
+	pass
 	# dereference on load
-	print " LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOK!!!"
-	print item
-	print item[0]
-	print item[2]
-	print item[3]
-	print 'pickle loads'
-	print 	cPickle.loads( str(item[0]) ) 
-	print 	cPickle.loads( str(item[1]) ) 
-	print 	cPickle.loads( str(item[2]) ) 
-	print 	cPickle.loads( str(item[3]) ) 
-
-	add_recipe( cPickle.loads( str(item[0]) ) )
-
+	#add_recipe( cPickle.loads( str(item[0]) ) )
 
     print "RECIPES: "
     print _recipes
 
-    
     conn.close()
 
 
