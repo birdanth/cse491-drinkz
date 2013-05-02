@@ -5,23 +5,33 @@ Database functionality for drinkz information.
 from . import  unitconversion
 from cPickle import dump, load
 import sqlite3, os
+import cPickle
 
 # private singleton variables at module level
 _bottle_types_db = set()
 _inventory_db = {}
 _recipes = {}
 
-
 try:
     os.unlink('tables.db')
 except OSError:
     pass
 
-database = sqlite3.connect('tables.db')
-c = database.cursor()
+db_conn = sqlite3.connect('tables.db')
+c = db_conn.cursor()
 
-# create a table for each above db type 
-#c.execute(' CREATE TABLE bottle_types ( mfg TEXT, lqr TEXT, typ TEXT )
+# bottle types
+c.execute("CREATE TABLE if not exists bottle_types ( mfg TEXT , lqr TEXT, typ TEXT )")
+
+# inventory
+c.execute("CREATE TABLE if not exists inventory ( mfg TEXT , lqr TEXT, amt INTEGER UNSIGNED DEFAULT '0' )")
+
+# recipes
+c.execute("CREATE TABLE if not exists recipes ( recipe TEXT )")
+
+db_conn.commit()
+db_conn.close()
+
 
 def _reset_db():
     "A method only to be used during testing -- toss the existing db info."
@@ -29,6 +39,7 @@ def _reset_db():
     _bottle_types_db = set()
     _inventory_db = {}
     _recipes = {}
+
 
 def save_db(filename):
     fp = open(filename, 'wb')
@@ -52,9 +63,115 @@ def load_db(filename):
 class LiquorMissing(Exception):
     pass
 
+
+def _reset_tables(db_name):
+    conn = sqlite3.connect(db_name)
+    c = conn.cursor()
+    c.execute('DELETE FROM bottle_types')
+    c.execute('DELETE FROM inventory')
+    c.execute('DELETE FROM recipes')
+    conn.commit()
+    conn.close()
+
+
+
+def print_contents(db_name):
+    contents = []
+    print_conn = sqlite3.connect(db_name)
+    print_cursor = print_conn.cursor()
+    print_cursor.execute("SELECT * from bottle_types")
+    contents.append( " BOTTLE TYPES: ")
+    contents.append( print_cursor.fetchall() )
+    print_cursor.execute("SELECT * from inventory")
+    contents.append( " INVENTORY: ")
+    contents.append( print_cursor.fetchall() )
+    contents.append( " RECIPES: ")
+    print_cursor.execute("SELECT * from recipes")
+    contents.append( print_cursor.fetchall() )
+    print_conn.close()
+    return contents
+
+
+def save_db_tables(db_name):
+
+    conn = sqlite3.connect(db_name)
+    c = conn.cursor()
+
+    for mfg,lqr,typ in _bottle_types_db:
+        c.execute("INSERT INTO bottle_types (mfg,lqr,typ) VALUES (?,?,?) ", (mfg,lqr,typ) )
+
+    for item in _inventory_db:
+        (mfg, lqr) = item
+        amt = _inventory_db[item]
+        c.execute("INSERT INTO inventory (mfg, lqr, amt) VALUES (?, ?, ?)", (mfg, lqr, amt))
+
+    for item in _recipes:
+        # add the pickle pointer to dereference on load
+        s = cPickle.dumps(item)
+        c.execute("INSERT INTO recipes (recipe) VALUES (?)", [sqlite3.Binary(s)])
+
+    conn.commit()
+    conn.close()
+
+
+
+def load_db_tables(db_name):
+
+    conn = sqlite3.connect(db_name)
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM bottle_types" ).fetchall()
+    bt = c.fetchall()
+    for mfg,lqr,typ in bt:	
+	add_bottle_type(mfg,lqr,typ)
+
+
+    c.execute("SELECT * FROM inventory")
+    inv = c.fetchall()
+    for mfg,lqr,amt in inv:
+	# TODO: make cases for units based on amt
+	add_to_inventory(mfg,lqr, str(amt) + ' ml')
+
+    rs = c.execute("SELECT * FROM recipes")
+    for item in rs:
+	# dereference on load
+	print " LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOK!!!"
+	print item
+	print item[0]
+	print item[2]
+	print item[3]
+	print 'pickle loads'
+	print 	cPickle.loads( str(item[0]) ) 
+	print 	cPickle.loads( str(item[1]) ) 
+	print 	cPickle.loads( str(item[2]) ) 
+	print 	cPickle.loads( str(item[3]) ) 
+
+	add_recipe( cPickle.loads( str(item[0]) ) )
+
+
+    print "RECIPES: "
+    print _recipes
+
+    
+    conn.close()
+
+
 def add_bottle_type(mfg, liquor, typ):
     "Add the given bottle type into the drinkz database."
     _bottle_types_db.add((mfg, liquor, typ))
+
+
+def add_bottle_type_table(mfg, liquor, typ):
+    conn = sqlite3.connect('tables.db')
+    c = conn.cursor()
+
+    c.execute("INSERT INTO bottle_types (mfg,lqr,typ) VALUES (?,?,?)",(mfg,liquor,typ))
+
+    conn.commit()
+    conn.close()
+
+    print_contents('tables.db')
+
 
 def _check_bottle_type_exists(mfg, liquor):
     for (m, l, _) in _bottle_types_db:
@@ -62,6 +179,19 @@ def _check_bottle_type_exists(mfg, liquor):
             return True
 
     return False
+
+
+def _check_bottle_type_exists_table(mfg, liquor):
+    conn = sqlite3.connect('tables.db')
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM bottle_types WHERE mfg=? and lqr=?", (mfg, liquor) )
+    if len(c.fetchall()) > 0:
+        conn.close()
+	return True
+    else:
+	conn.close()
+	return False
 
 def add_to_inventory(mfg, liquor, amount):
     "Add the given liquor/amount to inventory."
@@ -72,6 +202,19 @@ def add_to_inventory(mfg, liquor, amount):
     # just add it to the inventory database as a tuple, for now.
     key = (mfg, liquor)
     _inventory_db[key] = _inventory_db.get(key, 0.0) + convert_to_ml(amount)
+
+def add_to_inventory_table(mfg, liquor, amount):
+    conn = sqlite3.connect('tables.db')
+    c = conn.cursor()
+
+    
+
+    conn.commit()
+    conn.close()
+   
+    update_tables('tables.db')
+    print_contents('tables.db')
+
     
 def check_inventory(mfg, liquor):
     return ((mfg, liquor) in _inventory_db)

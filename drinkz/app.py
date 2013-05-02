@@ -8,6 +8,7 @@ import simplejson
 import make_html
 import db
 import recipes
+import sqlite3, os
 
 dispatch = {
     '/' : 'index',
@@ -54,14 +55,21 @@ class SimpleApp(object):
             return ["No path %s found" % path]
         
         return fn(environ, start_response)
-    
+
     ## Main Page
     def posting(self, environ, start_response):
         #data = make_html.index()
 	if environ['REQUEST_METHOD'] == 'POST':
 	    data = 'you just did a post operation!'
 	else:
+            #db_conn = sqlite3.connect('../tables.db')
+            #c = db_conn.cursor()
+	    #c.execute("INSERT INTO bottle_types (mfg,lqr,typ) VALUES (?,?,?)",('testing','liquor','shits'))
+	    #db.add_bottle_type_sql('Johnnie Walker', 'Black Label', 'blended scotch')
+            #c.execute('SELECT * FROM bottle_types')
+	    #data = str(c.fetchall())
 	    data = 'you fucked up'
+
         start_response('200 OK', list(plain_headers))
         return data
 
@@ -290,9 +298,6 @@ class SimpleApp(object):
        
         start_response('200 OK', list(html_headers))
         return [data]
-
-    def rpc_hello(self):
-        return 'world!'
 
     def rpc_add(self, a, b):
         return int(a) + int(b)
