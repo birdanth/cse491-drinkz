@@ -1,0 +1,12 @@
+For my implementation in the previous homework, I gave a rather gradiose implmentation of 
+everything, but decided to simply implement the portion which works with recipe to wine
+pairings. I did this by making a table named 'pairings' in which you can add a recipe name
+and its paired wines. Then to print out all the pairings you simply execute 'db.all_pairings().'
+I didnt have enough time to implement adding,deleting, or manipulating pairings, but I would
+do it via cursor.execute SQL commands. I like the idea of storing the pairings in a table,
+ideally in a seperate file that periodically updates itself with good recipe to wine/drink
+pairings. This when someone adds a drinks to what they are bringing they could simply cross
+check the pairings table for any good pairings - which could be done by simply entering
+their drink name or recipe name in a field on the website somewhere.
+
+
